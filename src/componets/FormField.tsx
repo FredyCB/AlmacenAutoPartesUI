@@ -1,15 +1,22 @@
-import { FieldError } from 'react-hook-form'
+import React from "react";
 
-export default function FormField(props: {
-  label: string
-  error?: FieldError
-  children: React.ReactNode
-}) {
+interface FormFieldProps {
+  label: string;
+  type?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function FormField({ label, type = "text", value, onChange }: FormFieldProps) {
   return (
-    <div className="space-y-1">
-      <label className="label">{props.label}</label>
-      {props.children}
-      {props.error && <p className="text-sm text-red-600">{props.error.message}</p>}
+    <div className="mb-4">
+      <label className="block text-sm font-medium mb-1">{label}</label>
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+        className="w-full border border-gray-300 rounded p-2"
+      />
     </div>
-  )
+  );
 }
