@@ -1,8 +1,9 @@
 import React from "react";
+import { FieldError } from "react-hook-form";
 
 interface FormFieldProps {
   label: string;
-  error?: any; // podría ser FieldError de react-hook-form
+  error?: FieldError;
   children: React.ReactNode;
 }
 
@@ -13,7 +14,7 @@ export default function FormField({ label, error, children }: FormFieldProps) {
       {children}
       {error && (
         <p className="text-red-500 text-xs mt-1">
-          {error.message || String(error)}
+          {error.message}
         </p>
       )}
     </div>
