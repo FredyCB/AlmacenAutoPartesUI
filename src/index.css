@@ -1,0 +1,12 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { --brand: #1f2937; }
+.btn { @apply px-4 py-2 rounded-xl shadow hover:shadow-md transition; }
+.btn-primary { @apply bg-black text-white; }
+.card { @apply bg-white rounded-2xl shadow p-4; }
+.input { @apply border rounded-xl px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-black/50; }
+.label { @apply text-sm text-gray-600; }
+.title { @apply text-2xl font-semibold; }
