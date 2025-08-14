@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
   }, [token])
 
   const login = async (email: string, password: string) => {
-    const res = await api.post('/api/users/login', { email, password })
+   const res = await api.post('/users/login', { email, password })
     setToken(res.data.idToken)
     // como el JWT es interno, no lo decodificamos, pero podemos pedir /me si existiera
     setUser({ id: 'me', firstname: 'Usuario', lastname: '', email, admin: false, active: true })
