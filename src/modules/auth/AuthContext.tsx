@@ -39,38 +39,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [token])
 
   const login = async (email: string, password: string) => {
-    const res = await api.post('/api/users/login', { email, password })
-    setToken(res.data.idToken)
+    try {
+      const res = await api.post('/api/users/login', { email, password })
+      setToken(res.data.idToken)
 
-    const loggedUser: User = {
-      id: 'me',
-      firstname: 'Usuario',
-      lastname: '',
-      email,
-      admin: false,
-      active: true
+      // Guardamos usuario con datos reales si el backend los devuelve
+      const loggedUser: User = {
+        id: res.data.id || 'me',
+        firstname: res.data.firstname || 'Usuario',
+        lastname: res.data.lastname || '',
+        email,
+        admin: res.data.admin ?? false,
+        active: res.data.active ?? true
+      }
+      setUser(loggedUser)
+      localStorage.setItem('user', JSON.stringify(loggedUser))
+    } catch (err: any) {
+      console.error('Error en login:', err)
+      throw err
     }
-    setUser(loggedUser)
-    localStorage.setItem('user', JSON.stringify(loggedUser))
   }
 
   const register = async (data: { name: string; lastname: string; email: string; password: string }) => {
-    const res = await api.post('/api/users/register', data)
-    if (res.data.idToken) {
-      setToken(res.data.idToken)
-      const newUser: User = {
-        id: res.data.id,
-        firstname: res.data.name,
-        lastname: res.data.lastname,
-        email: res.data.email,
-        admin: res.data.admin,
-        active: res.data.active
-      }
-      setUser(newUser)
-      localStorage.setItem('user', JSON.stringify(newUser))
-    } else {
-      // Si no viene token, forzamos login normal
+    try {
+      await api.post('/api/users/register', data)
+      // Hacemos login inmediato tras registro
       await login(data.email, data.password)
+    } catch (err: any) {
+      console.error('Error en register:', err)
+      throw err
     }
   }
 
